@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Image Gallery',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: const GalleryScreen(),
     );
   }
@@ -29,6 +31,7 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
+
   List images = [];
 
   bool isLoading = true;
@@ -40,15 +43,22 @@ class _GalleryScreenState extends State<GalleryScreen> {
   }
 
   Future<void> fetchImages() async {
-    final response = await http.get(Uri.parse('https://picsum.photos/v2/list'));
+
+    final response = await http.get(
+      Uri.parse('https://picsum.photos/v2/list'),
+    );
 
     if (response.statusCode == 200) {
+
       setState(() {
+
         images = json.decode(response.body);
 
         isLoading = false;
       });
+
     } else {
+
       setState(() {
         isLoading = false;
       });
@@ -57,39 +67,71 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       appBar: AppBar(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
+        title: const Text("Image Gallery"),
+        centerTitle: true,
       ),
 
-      body:
-          isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : RefreshIndicator(
-                onRefresh: fetchImages,
+      body: isLoading
 
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
 
-                  child: GridView.builder(
-                    itemCount: images.length,
+          : RefreshIndicator(
 
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+              onRefresh: fetchImages,
 
-                          crossAxisSpacing: 10,
+              child: Padding(
 
-                          mainAxisSpacing: 10,
+                padding: const EdgeInsets.all(10),
 
-                          childAspectRatio: 0.75,
-                        ),
+                child: GridView.builder(
 
-                    itemBuilder: (context, index) {
-                      final image = images[index];
+                  itemCount: images.length,
 
-                      return Container(
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+
+                    crossAxisCount: 2,
+
+                    crossAxisSpacing: 10,
+
+                    mainAxisSpacing: 10,
+
+                    childAspectRatio: 0.75,
+                  ),
+
+                  itemBuilder: (context, index) {
+
+                    final image = images[index];
+
+                    return GestureDetector(
+
+                      onTap: () {
+
+                        Navigator.push(
+
+                          context,
+
+                          MaterialPageRoute(
+
+                            builder: (_) => FullScreenImage(
+
+                              images: images,
+                              initialIndex: index,
+                            ),
+                          ),
+                        );
+                      },
+
+                      child: Container(
+
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white,
@@ -97,22 +139,27 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             BoxShadow(
                               color: Colors.black.withOpacity(0.1),
                               blurRadius: 5,
-                            ),
+                            )
                           ],
                         ),
 
                         child: Column(
+
                           crossAxisAlignment: CrossAxisAlignment.start,
 
                           children: [
+
                             Expanded(
+
                               child: ClipRRect(
+
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
                                 ),
 
                                 child: Image.network(
+
                                   image['download_url'],
 
                                   width: double.infinity,
@@ -124,6 +171,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                                     child,
                                     loadingProgress,
                                   ) {
+
                                     if (loadingProgress == null) {
                                       return child;
                                     }
@@ -133,7 +181,9 @@ class _GalleryScreenState extends State<GalleryScreen> {
                                     );
                                   },
 
-                                  errorBuilder: (context, error, stackTrace) {
+                                  errorBuilder:
+                                      (context, error, stackTrace) {
+
                                     return const Center(
                                       child: Icon(Icons.error),
                                     );
@@ -143,9 +193,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             ),
 
                             Padding(
+
                               padding: const EdgeInsets.all(8.0),
 
                               child: Text(
+
                                 image['author'],
 
                                 maxLines: 1,
@@ -159,11 +211,137 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             ),
                           ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
+            ),
+    );
+  }
+}
+
+class FullScreenImage extends StatefulWidget {
+
+  final List images;
+  final int initialIndex;
+
+  const FullScreenImage({
+    super.key,
+    required this.images,
+    required this.initialIndex,
+  });
+
+  @override
+  State<FullScreenImage> createState() => _FullScreenImageState();
+}
+
+class _FullScreenImageState extends State<FullScreenImage> {
+
+  late int currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+  }
+
+  void nextImage() {
+
+    if (currentIndex < widget.images.length - 1) {
+
+      setState(() {
+        currentIndex++;
+      });
+    }
+  }
+
+  void previousImage() {
+
+    if (currentIndex > 0) {
+
+      setState(() {
+        currentIndex--;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final image = widget.images[currentIndex];
+
+    return Scaffold(
+
+      backgroundColor: Colors.black,
+
+      appBar: AppBar(
+
+        backgroundColor: Colors.black,
+
+        foregroundColor: Colors.white,
+
+        title: Text(image['author']),
+      ),
+
+      body: Stack(
+
+        children: [
+
+          Center(
+
+            child: InteractiveViewer(
+
+              child: Image.network(
+                image['download_url'],
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+
+          Positioned(
+
+            left: 10,
+            top: 0,
+            bottom: 0,
+
+            child: Center(
+
+              child: IconButton(
+
+                onPressed: previousImage,
+
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+
+            right: 10,
+            top: 0,
+            bottom: 0,
+
+            child: Center(
+
+              child: IconButton(
+
+                onPressed: nextImage,
+
+                icon: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
