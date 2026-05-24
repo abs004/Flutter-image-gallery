@@ -245,101 +245,110 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
 
-                  child: GridView.builder(
-                    itemCount: images.length,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    radius: const Radius.circular(10),
 
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                    child: GridView.builder(
+                      itemCount: images.length,
 
-                          crossAxisSpacing: 10,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
 
-                          mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
 
-                          childAspectRatio: 0.75,
-                        ),
+                            mainAxisSpacing: 10,
 
-                    itemBuilder: (context, index) {
-                      final image = images[index];
-
-                      return GestureDetector(
-                        onTap: () {
-                          showImagePopup(context, index);
-                        },
-
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 5,
-                              ),
-                            ],
+                            childAspectRatio: 0.75,
                           ),
 
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      itemBuilder: (context, index) {
+                        final image = images[index];
 
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
+                        return GestureDetector(
+                          onTap: () {
+                            showImagePopup(context, index);
+                          },
 
-                                  child: Image.network(
-                                    image['download_url'],
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 5,
+                                ),
+                              ],
+                            ),
 
-                                    width: double.infinity,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
 
-                                    fit: BoxFit.cover,
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
 
-                                    loadingBuilder: (
-                                      context,
-                                      child,
-                                      loadingProgress,
-                                    ) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      }
+                                    child: Image.network(
+                                      image['download_url'],
 
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
+                                      width: double.infinity,
 
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Center(
-                                        child: Icon(Icons.error),
-                                      );
-                                    },
+                                      fit: BoxFit.cover,
+
+                                      loadingBuilder: (
+                                        context,
+                                        child,
+                                        loadingProgress,
+                                      ) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
+
+                                      errorBuilder: (
+                                        context,
+                                        error,
+                                        stackTrace,
+                                      ) {
+                                        return const Center(
+                                          child: Icon(Icons.error),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
 
-                                child: Text(
-                                  image['author'],
+                                  child: Text(
+                                    image['author'],
 
-                                  maxLines: 1,
+                                    maxLines: 1,
 
-                                  overflow: TextOverflow.ellipsis,
+                                    overflow: TextOverflow.ellipsis,
 
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
