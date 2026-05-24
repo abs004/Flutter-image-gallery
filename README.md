@@ -51,13 +51,13 @@ flutter run
 
 <table>
   <tr>
-    <td allign="center">
+    <td align="center">
       <img src="assets/home.jpeg" width="250"/>
       <br/>
       <b>Home Screen</b>
     </td>
 
-    <td allign="center">
+    <td align="center">
       <img src="assets/popup.jpeg" width="250"/>
       <br/>
       <b>Image Viewer</b>
