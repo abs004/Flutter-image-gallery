@@ -49,10 +49,18 @@ flutter run
 
 ## Screenshots
 
-### Home Screen
+<table>
+  <tr>
+    <td allign="center">
+      <img src="assets/home.jpeg" width="250"/>
+      <br/>
+      <b>Home Screen</b>
+    </td>
 
-![Home Screen](assets/home.jpeg)
-
-### Image Viewer
-
-![Image Viewer](assets/popup.jpeg)
+    <td allign="center">
+      <img src="assets/popup.jpeg" width="250"/>
+      <br/>
+      <b>Image Viewer</b>
+    </td>
+  </tr>
+</table>
