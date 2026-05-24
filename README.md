@@ -1,13 +1,58 @@
 # Flutter Image Gallery
 
-A Flutter app that fetches and displays images from the Picsum API.
+A modern Flutter image gallery app that fetches and displays images from the Picsum Photos API.
 
 ## Features
-- Fetch images from API
-- Grid layout UI
-- Pull to refresh
-- Loading indicators
-- Responsive design
+
+- Fetch images from REST API
+- Responsive grid layout
+- Smooth image loading indicators
+- Pull to refresh functionality
+- Interactive image popup viewer
+- Blurred background popup effect
+- Previous and next image navigation
+- Scrollbar support
+- Clean and modern UI
 
 ## API Used
+
 https://picsum.photos/v2/list
+
+## Tech Stack
+
+- Flutter
+- Dart
+- HTTP package
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/abs004/Flutter-image-gallery.git
+```
+### 2. Open project folder
+```
+cd flutter_image_gallery
+```
+
+### 3. Install dependencies
+```
+flutter pub get
+```
+
+### 4. Run the application
+```
+flutter run
+```
+
+
+## Screenshots
+
+### Home Screen
+
+![Home Screen](assets/home.jpeg)
+
+### Image Viewer
+
+![Image Viewer](assets/popup.jpeg)
