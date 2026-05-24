@@ -52,13 +52,12 @@ flutter run
 <table>
   <tr>
     <td align="center">
-      <img src="assets/home.jpeg" width="250"/>
+      <img src="assets/home.jpeg" width="250" alt="Home Screen"/>
       <br/>
       <b>Home Screen</b>
     </td>
-
     <td align="center">
-      <img src="assets/popup.jpeg" width="250"/>
+      <img src="assets/popup.jpeg" width="250" alt="Image Viewer"/>
       <br/>
       <b>Image Viewer</b>
     </td>
