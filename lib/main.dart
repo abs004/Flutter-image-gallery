@@ -3,9 +3,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart'; // 👈 added
+import 'package:provider/provider.dart';
 
-// ====== 👇 ADD THIS CLASS ======
 class GalleryProvider extends ChangeNotifier {
   List images = [];
   bool isLoading = true;
@@ -28,11 +27,9 @@ class GalleryProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-// ====== 👆 ADD THIS CLASS ======
 
 void main() {
   runApp(
-    // 👇 wrap MyApp with this
     ChangeNotifierProvider(
       create: (_) => GalleryProvider(),
       child: const MyApp(),
@@ -55,10 +52,8 @@ class MyApp extends StatelessWidget {
 }
 
 class GalleryScreen extends StatelessWidget {
-  // 👈 StatefulWidget → StatelessWidget
   const GalleryScreen({super.key});
 
-  // 👇 added images parameter (needed since we removed the state)
   void showImagePopup(BuildContext context, int initialIndex, List images) {
     int currentIndex = initialIndex;
 
@@ -201,7 +196,7 @@ class GalleryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider =
-        context.watch<GalleryProvider>(); // 👈 get data from provider
+        context.watch<GalleryProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -212,17 +207,17 @@ class GalleryScreen extends StatelessWidget {
       ),
       body:
           provider
-                  .isLoading // 👈 provider.isLoading instead of isLoading
+                  .isLoading
               ? const Center(child: CircularProgressIndicator())
               : RefreshIndicator(
-                onRefresh: provider.fetchImages, // 👈 provider.fetchImages
+                onRefresh: provider.fetchImages,
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Scrollbar(
                     thumbVisibility: true,
                     radius: const Radius.circular(10),
                     child: GridView.builder(
-                      itemCount: provider.images.length, // 👈 provider.images
+                      itemCount: provider.images.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
@@ -232,7 +227,7 @@ class GalleryScreen extends StatelessWidget {
                           ),
                       itemBuilder: (context, index) {
                         final image =
-                            provider.images[index]; // 👈 provider.images
+                            provider.images[index];
 
                         return GestureDetector(
                           onTap: () {
@@ -240,7 +235,7 @@ class GalleryScreen extends StatelessWidget {
                               context,
                               index,
                               provider.images,
-                            ); // 👈 pass images
+                            );
                           },
                           child: Container(
                             decoration: BoxDecoration(
