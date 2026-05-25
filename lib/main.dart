@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 class GalleryProvider extends ChangeNotifier {
   List images = [];
   bool isLoading = true;
+  String? errorMessage;
 
   GalleryProvider() {
     fetchImages();
@@ -15,12 +16,15 @@ class GalleryProvider extends ChangeNotifier {
 
   Future<void> fetchImages() async {
     isLoading = true;
+    errorMessage = null;
     notifyListeners();
 
     final response = await http.get(Uri.parse('https://picsum.photos/v2/list'));
 
     if (response.statusCode == 200) {
       images = json.decode(response.body);
+    } else {
+      errorMessage = 'Failed to load images';
     }
 
     isLoading = false;
@@ -195,8 +199,7 @@ class GalleryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider =
-        context.watch<GalleryProvider>();
+    final provider = context.watch<GalleryProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -206,9 +209,10 @@ class GalleryScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body:
-          provider
-                  .isLoading
+          provider.isLoading
               ? const Center(child: CircularProgressIndicator())
+              : provider.errorMessage != null
+              ? Center(child: Text(provider.errorMessage!))
               : RefreshIndicator(
                 onRefresh: provider.fetchImages,
                 child: Padding(
@@ -226,16 +230,11 @@ class GalleryScreen extends StatelessWidget {
                             childAspectRatio: 0.75,
                           ),
                       itemBuilder: (context, index) {
-                        final image =
-                            provider.images[index];
+                        final image = provider.images[index];
 
                         return GestureDetector(
                           onTap: () {
-                            showImagePopup(
-                              context,
-                              index,
-                              provider.images,
-                            );
+                            showImagePopup(context, index, provider.images);
                           },
                           child: Container(
                             decoration: BoxDecoration(

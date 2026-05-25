@@ -12,7 +12,10 @@ A modern Flutter image gallery app that fetches and displays images from the Pic
 - Blurred background popup effect
 - Previous and next image navigation
 - Scrollbar support
+- Provider state management
+- Error handling
 - Clean and modern UI
+
 
 ## API Used
 
@@ -22,6 +25,7 @@ https://picsum.photos/v2/list
 
 - Flutter
 - Dart
+- Provider (State Management)
 - HTTP package
 
 ## Getting Started
